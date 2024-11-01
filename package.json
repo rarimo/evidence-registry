@@ -1,0 +1,65 @@
+{
+  "name": "evidence-registry",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Distributed Lab",
+  "description": "",
+  "keywords": [
+    "solidity",
+    "smart-contracts"
+  ],
+  "files": [
+    "**/*.sol",
+    "!mock/**/*"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "compile": "npx hardhat compile",
+    "coverage": "npx hardhat coverage --solcoverjs ./.solcover.ts",
+    "clean": "npx hardhat clean",
+    "test": "npx hardhat test",
+    "test-all": "npm run deploy-localhost && npm run test",
+    "private-network": "npx hardhat node",
+    "deploy-localhost": "npx hardhat migrate --network localhost",
+    "generate-types": "TYPECHAIN_FORCE=true npx hardhat typechain",
+    "solhint-check": "solhint \"./contracts/**/*.sol\"",
+    "lint-fix": "npm run lint-sol-fix && npm run lint-ts-fix && npm run lint-json-fix && npm run solhint-check",
+    "lint-json-fix": "prettier --write \"./**/*.json\"",
+    "lint-ts-fix": "prettier --write \"./**/*.ts\"",
+    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\"",
+    "publish-to-npm": "npm run lint-fix && bash ./scripts/publish.sh --public"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.1.0",
+    "@openzeppelin/contracts-upgradeable": "5.1.0",
+    "@solarity/solidity-lib": "2.7.10"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.7",
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
+    "@solarity/hardhat-migrate": "^2.1.10",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^22.8.6",
+    "chai": "^4.5.0",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "hardhat": "^2.22.10",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-gas-reporter": "^2.2.1",
+    "husky": "^9.1.6",
+    "mocha": "^10.8.2",
+    "prettier": "^3.3.3",
+    "prettier-plugin-solidity": "^1.4.1",
+    "solhint": "^5.0.3",
+    "solhint-plugin-prettier": "^0.1.0",
+    "solidity-coverage": "^0.8.13",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typechain": "^8.3.2",
+    "typescript": "^5.6.3"
+  }
+}
