@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
+import {IEvidenceDB} from "../interfaces/IEvidenceDB.sol";
+
 /**
  * @notice Sparse Merkle Tree implementation.
  */
@@ -69,29 +71,6 @@ library SparseMerkleTree {
         bytes32 nodeHash;
         bytes32 key;
         bytes32 value;
-    }
-
-    /**
-     * @notice Represents the proof of a node's (non-)existence within the Merkle tree.
-     *
-     * @param root The root hash of the Merkle tree.
-     * @param siblings An array of sibling hashes can be used to get the Merkle Root.
-     * @param existence Indicates the presence (true) or absence (false) of the node.
-     * @param key The key associated with the node.
-     * @param value The value associated with the node.
-     * @param auxExistence Indicates the presence (true) or absence (false) of an auxiliary node.
-     * @param auxKey The key of the auxiliary node.
-     * @param auxValue The value of the auxiliary node.
-     */
-    struct Proof {
-        bytes32 root;
-        bytes32[] siblings;
-        bool existence;
-        bytes32 key;
-        bytes32 value;
-        bool auxExistence;
-        bytes32 auxKey;
-        bytes32 auxValue;
     }
 
     modifier onlyInitialized(SMT storage tree) {
@@ -208,10 +187,13 @@ library SparseMerkleTree {
      * @param key_ The key of the element.
      * @return SMT proof struct.
      */
-    function getProof(SMT storage tree, bytes32 key_) internal view returns (Proof memory) {
+    function getProof(
+        SMT storage tree,
+        bytes32 key_
+    ) internal view returns (IEvidenceDB.Proof memory) {
         uint256 maxDepth_ = _maxDepth(tree);
 
-        Proof memory proof_ = Proof({
+        IEvidenceDB.Proof memory proof_ = IEvidenceDB.Proof({
             root: _root(tree),
             siblings: new bytes32[](maxDepth_),
             existence: false,
@@ -642,7 +624,8 @@ library SparseMerkleTree {
     }
 
     function _hash2(bytes32 a, bytes32 b) private pure returns (bytes32 result) {
-        assembly {
+        // solhint-disable-next-line no-inline-assembly
+        assembly ("memory-safe") {
             mstore(0, a)
             mstore(32, b)
 
@@ -654,7 +637,8 @@ library SparseMerkleTree {
      * @dev The decision not to update the free memory pointer is due to the temporary nature of the hash arguments.
      */
     function _hash3(bytes32 a, bytes32 b, bytes32 c) private pure returns (bytes32 result) {
-        assembly {
+        // solhint-disable-next-line no-inline-assembly
+        assembly ("memory-safe") {
             let free_ptr := mload(64)
 
             mstore(free_ptr, a)
