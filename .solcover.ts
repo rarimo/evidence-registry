@@ -1,4 +1,3 @@
 module.exports = {
-  skipFiles: ["mock"],
-  configureYulOptimizer: true,
+  skipFiles: ["mocks", "interfaces", "libraries/Poseidon.sol"],
 };

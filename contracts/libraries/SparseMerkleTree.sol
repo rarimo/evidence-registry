@@ -36,7 +36,7 @@ library SparseMerkleTree {
      * @param merkleRootId The index of the root node.
      * @param maxDepth The maximum depth of the Merkle tree.
      * @param nodesCount The total number of nodes within the Merkle tree.
-     * @param isCustomHasherSet Indicates whether custom hash functions have been configured (true) or not (false).
+     * @param customHasherSet Indicates whether custom hash functions have been configured (true) or not (false).
      * @param hash2 A hash function accepting two arguments.
      * @param hash3 A hash function accepting three arguments.
      */
@@ -46,7 +46,7 @@ library SparseMerkleTree {
         uint64 nodesCount;
         uint64 deletedNodesCount;
         uint32 maxDepth;
-        bool isCustomHasherSet;
+        bool customHasherSet;
         function(bytes32, bytes32) view returns (bytes32) hash2;
         function(bytes32, bytes32, bytes32) view returns (bytes32) hash3;
     }
@@ -138,7 +138,7 @@ library SparseMerkleTree {
     ) internal {
         if (_nodesCount(tree) != 0) revert TreeIsNotEmpty();
 
-        tree.isCustomHasherSet = true;
+        tree.customHasherSet = true;
 
         tree.hash2 = hash2_;
         tree.hash3 = hash3_;
@@ -152,7 +152,7 @@ library SparseMerkleTree {
      * @param key_ The key of the element.
      * @param value_ The value of the element.
      */
-    function add(SMT storage tree, bytes32 key_, bytes32 value_) internal {
+    function add(SMT storage tree, bytes32 key_, bytes32 value_) internal onlyInitialized(tree) {
         _add(tree, key_, value_);
     }
 
@@ -163,7 +163,7 @@ library SparseMerkleTree {
      * @param tree self.
      * @param key_ The key of the element.
      */
-    function remove(SMT storage tree, bytes32 key_) internal {
+    function remove(SMT storage tree, bytes32 key_) internal onlyInitialized(tree) {
         tree.merkleRootId = uint64(_remove(tree, key_, tree.merkleRootId, 0));
     }
 
@@ -175,7 +175,11 @@ library SparseMerkleTree {
      * @param key_ The key of the element.
      * @param newValue_ The new value of the element.
      */
-    function update(SMT storage tree, bytes32 key_, bytes32 newValue_) internal {
+    function update(
+        SMT storage tree,
+        bytes32 key_,
+        bytes32 newValue_
+    ) internal onlyInitialized(tree) {
         _update(tree, key_, newValue_);
     }
 
@@ -335,7 +339,7 @@ library SparseMerkleTree {
      * @return True if custom hash functions are set, otherwise false.
      */
     function isCustomHasherSet(SMT storage tree) internal view returns (bool) {
-        return tree.isCustomHasherSet;
+        return tree.customHasherSet;
     }
 
     function _setMaxDepth(SMT storage tree, uint32 maxDepth_) private {
@@ -349,7 +353,7 @@ library SparseMerkleTree {
         tree.maxDepth = maxDepth_;
     }
 
-    function _add(SMT storage tree, bytes32 key_, bytes32 value_) private onlyInitialized(tree) {
+    function _add(SMT storage tree, bytes32 key_, bytes32 value_) private {
         Node memory node_ = Node({
             nodeType: NodeType.LEAF,
             childLeft: ZERO_IDX,
@@ -362,11 +366,7 @@ library SparseMerkleTree {
         tree.merkleRootId = uint64(_add(tree, node_, tree.merkleRootId, 0));
     }
 
-    function _update(
-        SMT storage tree,
-        bytes32 key_,
-        bytes32 newValue_
-    ) private onlyInitialized(tree) {
+    function _update(SMT storage tree, bytes32 key_, bytes32 newValue_) private {
         Node memory node_ = Node({
             nodeType: NodeType.LEAF,
             childLeft: ZERO_IDX,
@@ -609,10 +609,10 @@ library SparseMerkleTree {
      * non-empty nodes and is not intended for external use.
      */
     function _getNodeHash(SMT storage tree, Node memory node_) private view returns (bytes32) {
-        function(bytes32, bytes32) view returns (bytes32) hash2_ = tree.isCustomHasherSet
+        function(bytes32, bytes32) view returns (bytes32) hash2_ = tree.customHasherSet
             ? tree.hash2
             : _hash2;
-        function(bytes32, bytes32, bytes32) view returns (bytes32) hash3_ = tree.isCustomHasherSet
+        function(bytes32, bytes32, bytes32) view returns (bytes32) hash3_ = tree.customHasherSet
             ? tree.hash3
             : _hash3;
 

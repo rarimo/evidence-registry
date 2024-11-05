@@ -53,7 +53,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         bytes32 isolatedKey_ = _getIsolatedKey(key_);
 
         if (_evidenceDB.getValue(isolatedKey_) == bytes32(0)) {
-            revert KeyNotFound(key_);
+            revert KeyDoesNotExist(key_);
         }
 
         _evidenceDB.remove(isolatedKey_);
@@ -69,7 +69,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         bytes32 isolatedKey_ = _getIsolatedKey(key_);
 
         if (_evidenceDB.getValue(isolatedKey_) == bytes32(0)) {
-            revert KeyNotFound(key_);
+            revert KeyDoesNotExist(key_);
         }
 
         _evidenceDB.update(isolatedKey_, newValue_);
@@ -82,13 +82,17 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         return _rootTimestamps[root_];
     }
 
+    function getEvidenceDB() external view returns (address) {
+        return address(_evidenceDB);
+    }
+
     function _getIsolatedKey(bytes32 key_) internal view returns (bytes32) {
         return PoseidonUnit2L.poseidon([bytes32(uint256(uint160(msg.sender))), key_]);
     }
 
     function _requireInPrimeField(bytes32 key_) private pure {
         if (uint256(key_) >= BABY_JUB_JUB_PRIME_FIELD) {
-            revert KeyNotInPrimeField(key_);
+            revert NumberNotInPrimeField(key_);
         }
     }
 }
