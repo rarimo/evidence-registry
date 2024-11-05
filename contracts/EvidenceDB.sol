@@ -20,10 +20,6 @@ contract EvidenceDB is IEvidenceDB, Initializable {
         _;
     }
 
-    constructor() {
-        _disableInitializers();
-    }
-
     function __EvidenceDB_init(address evidenceRegistry_, uint32 maxDepth_) external initializer {
         _evidenceRegistry = evidenceRegistry_;
 

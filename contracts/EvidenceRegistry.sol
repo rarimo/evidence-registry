@@ -16,10 +16,6 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
 
     mapping(bytes32 => uint256) private _rootTimestamps;
 
-    constructor() {
-        _disableInitializers();
-    }
-
     modifier onlyInPrimeField(bytes32 key) {
         _requireInPrimeField(key);
         _;
