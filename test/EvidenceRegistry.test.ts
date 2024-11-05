@@ -144,9 +144,10 @@ describe("EvidenceRegistry", () => {
       await evidenceRegistry.addStatement(key, value);
 
       const rootWhenKeyAdded = await evidenceDB.getRoot();
-      const keyAddTimestamp = (await time.latest()) + 1;
 
       await evidenceRegistry.addStatement(value, value);
+
+      const keyAddTimestamp = await time.latest();
 
       expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
 
