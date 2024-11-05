@@ -22,8 +22,8 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
     }
 
     modifier onRootUpdate() {
-        _;
         _rootTimestamps[_evidenceDB.getRoot()] = block.timestamp;
+        _;
     }
 
     function __EvidenceRegistry_init(address evidenceDB_) external initializer {
@@ -79,6 +79,14 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
      * @inheritdoc IEvidenceRegistry
      */
     function getRootTimestamp(bytes32 root_) external view returns (uint256) {
+        if (root_ == bytes32(0)) {
+            return 0;
+        }
+
+        if (root_ == _evidenceDB.getRoot()) {
+            return block.timestamp;
+        }
+
         return _rootTimestamps[root_];
     }
 

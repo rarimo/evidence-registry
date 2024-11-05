@@ -128,13 +128,13 @@ describe("EvidenceDB", () => {
 
     it("should revert if trying to add/remove/update element in the try by not a registry", async () => {
       await expect(evidenceDB.add(ethers.ZeroHash, ethers.ZeroHash))
-        .to.be.revertedWithCustomError(evidenceDB, "NorFromEvidenceRegistry")
+        .to.be.revertedWithCustomError(evidenceDB, "NotFromEvidenceRegistry")
         .withArgs(USER.address);
       await expect(evidenceDB.remove(ethers.ZeroHash))
-        .to.be.revertedWithCustomError(evidenceDB, "NorFromEvidenceRegistry")
+        .to.be.revertedWithCustomError(evidenceDB, "NotFromEvidenceRegistry")
         .withArgs(USER.address);
       await expect(evidenceDB.update(ethers.ZeroHash, ethers.ZeroHash))
-        .to.be.revertedWithCustomError(evidenceDB, "NorFromEvidenceRegistry")
+        .to.be.revertedWithCustomError(evidenceDB, "NotFromEvidenceRegistry")
         .withArgs(USER.address);
     });
   });

@@ -86,7 +86,7 @@ contract EvidenceDB is IEvidenceDB, Initializable {
 
     function _requireEvidenceRegistry() private view {
         if (_evidenceRegistry != msg.sender) {
-            revert NorFromEvidenceRegistry(msg.sender);
+            revert NotFromEvidenceRegistry(msg.sender);
         }
     }
 

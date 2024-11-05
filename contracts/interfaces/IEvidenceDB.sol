@@ -27,7 +27,7 @@ interface IEvidenceDB {
         bytes32 auxValue;
     }
 
-    error NorFromEvidenceRegistry(address sender);
+    error NotFromEvidenceRegistry(address sender);
 
     /**
      * @notice Adds the new element to the tree.

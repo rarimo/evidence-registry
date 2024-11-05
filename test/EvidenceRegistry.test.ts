@@ -106,11 +106,10 @@ describe("EvidenceRegistry", () => {
       const value = poseidonHash(key);
 
       await evidenceRegistry.addStatement(key, value);
-
       await evidenceRegistry.removeStatement(key);
 
       expect(await evidenceDB.getValue(getIsolatedKey(USER.address, key))).to.be.equal(ethers.ZeroHash);
-      expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
+      expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(0);
     });
 
     it("should revert if trying to remove statement that does not exist", async () => {
@@ -133,6 +132,27 @@ describe("EvidenceRegistry", () => {
       await evidenceRegistry.updateStatement(key, newValue);
 
       expect(await evidenceDB.getValue(getIsolatedKey(USER.address, key))).to.be.equal(newValue);
+      expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
+    });
+
+    it("should get correct root timestamp", async () => {
+      expect(await evidenceRegistry.getRootTimestamp(ethers.ZeroHash)).to.be.equal(0);
+
+      const key = ethers.ZeroHash;
+      const value = poseidonHash(key);
+
+      await evidenceRegistry.addStatement(key, value);
+
+      const rootWhenKeyAdded = await evidenceDB.getRoot();
+      const keyAddTimestamp = (await time.latest()) + 1;
+
+      await evidenceRegistry.addStatement(value, value);
+
+      expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
+
+      await time.increase(1000);
+
+      expect(await evidenceRegistry.getRootTimestamp(rootWhenKeyAdded)).to.be.equal(keyAddTimestamp);
       expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
     });
 
