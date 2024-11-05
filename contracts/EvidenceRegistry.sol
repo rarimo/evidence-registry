@@ -86,7 +86,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         return PoseidonUnit2L.poseidon([bytes32(uint256(uint160(msg.sender))), key_]);
     }
 
-    function _requireInPrimeField(bytes32 key_) private view {
+    function _requireInPrimeField(bytes32 key_) private pure {
         if (uint256(key_) >= BABY_JUB_JUB_PRIME_FIELD) {
             revert KeyNotInPrimeField(key_);
         }

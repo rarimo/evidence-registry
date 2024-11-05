@@ -17,6 +17,7 @@ describe("EvidenceDB", () => {
 
   const MERKLE_TREE_DEPTH = 20;
 
+  let USER: SignerWithAddress;
   let REGISTRY: SignerWithAddress;
 
   let merkleTree: EvidenceDB;
@@ -26,7 +27,7 @@ describe("EvidenceDB", () => {
   let localMerkleTree: Merkletree;
 
   before("setup", async () => {
-    [REGISTRY] = await ethers.getSigners();
+    [USER, REGISTRY] = await ethers.getSigners();
 
     const EvidenceDB = await ethers.getContractFactory("EvidenceDB", {
       libraries: {
@@ -88,20 +89,83 @@ describe("EvidenceDB", () => {
         .to.be.revertedWithCustomError(merkleTree, "InvalidInitialization")
         .withArgs();
     });
+
+    it("should correctly initialize the tree", async () => {
+      expect(await merkleTree.getEvidenceRegistry()).to.equal(REGISTRY.address);
+    });
   });
 
   describe("#Basic functionality", () => {
-    it.only("should add element to the tree", async () => {
+    it("should add element to the tree", async () => {
       expect(await merkleTree.getRoot()).to.equal(ethers.ZeroHash);
 
       const value = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
       const key = poseidonHash(value);
 
-      await merkleTree.add(key, value);
+      await merkleTree.connect(REGISTRY).add(key, value);
       await localMerkleTree.add(BigInt(key), BigInt(value));
 
       expect(await merkleTree.getValue(key)).to.equal(value);
       expect(await merkleTree.getRoot()).to.equal(await getRoot(localMerkleTree));
+      expect(getOnchainProof(await merkleTree.getProof(key))).to.deep.equal(
+        (await localMerkleTree.generateProof(BigInt(key))).proof,
+      );
+      expect(await merkleTree.getSize()).to.equal(1);
+    });
+
+    it("should correctly build the tree with multiple elements", async () => {
+      let key;
+      let value;
+
+      for (let i = 0; i < 10; i++) {
+        value = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
+        key = poseidonHash(value);
+
+        await merkleTree.connect(REGISTRY).add(key, value);
+        await localMerkleTree.add(BigInt(key), BigInt(value));
+      }
+
+      expect(await merkleTree.getValue(key!)).to.equal(value);
+      expect(await merkleTree.getRoot()).to.equal(await getRoot(localMerkleTree));
+      expect(getOnchainProof(await merkleTree.getProof(key!))).to.deep.equal(
+        (await localMerkleTree.generateProof(BigInt(key!))).proof,
+      );
+    });
+
+    it("should remove element from the tree", async () => {
+      const value = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
+      const key = poseidonHash(value);
+
+      await merkleTree.connect(REGISTRY).add(key, value);
+      await merkleTree.connect(REGISTRY).remove(key);
+
+      expect(await merkleTree.getValue(key)).to.equal(ethers.ZeroHash);
+    });
+
+    it("should update element in the tree", async () => {
+      const value = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
+      const key = poseidonHash(value);
+
+      await merkleTree.connect(REGISTRY).add(key, value);
+
+      expect(await merkleTree.getValue(key)).to.equal(value);
+
+      const newValue = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
+      await merkleTree.connect(REGISTRY).update(key, newValue);
+
+      expect(await merkleTree.getValue(key)).to.equal(newValue);
+    });
+
+    it("should revert if trying to add/remove/update element in the try by not a registry", async () => {
+      await expect(merkleTree.add(ethers.ZeroHash, ethers.ZeroHash))
+        .to.be.revertedWithCustomError(merkleTree, "NorFromEvidenceRegistry")
+        .withArgs(USER.address);
+      await expect(merkleTree.remove(ethers.ZeroHash))
+        .to.be.revertedWithCustomError(merkleTree, "NorFromEvidenceRegistry")
+        .withArgs(USER.address);
+      await expect(merkleTree.update(ethers.ZeroHash, ethers.ZeroHash))
+        .to.be.revertedWithCustomError(merkleTree, "NorFromEvidenceRegistry")
+        .withArgs(USER.address);
     });
   });
 });
