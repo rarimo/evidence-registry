@@ -66,6 +66,13 @@ contract EvidenceDB is IEvidenceDB, Initializable {
     /**
      * @inheritdoc IEvidenceDB
      */
+    function getMaxHeight() external view returns (uint256) {
+        return _tree.getMaxDepth();
+    }
+
+    /**
+     * @inheritdoc IEvidenceDB
+     */
     function getProof(bytes32 key_) external view returns (Proof memory) {
         return _tree.getProof(key_);
     }

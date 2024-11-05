@@ -62,6 +62,8 @@ describe("EvidenceDB", () => {
 
     it("should correctly initialize the tree", async () => {
       expect(await evidenceDB.getEvidenceRegistry()).to.equal(REGISTRY.address);
+
+      expect(await evidenceDB.getMaxHeight()).to.equal(MERKLE_TREE_DEPTH);
     });
   });
 

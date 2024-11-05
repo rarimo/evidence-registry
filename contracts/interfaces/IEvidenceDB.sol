@@ -56,6 +56,11 @@ interface IEvidenceDB {
     function getSize() external view returns (uint256);
 
     /**
+     * @notice Gets the max tree height (number of branches in the Merkle proof)
+     */
+    function getMaxHeight() external view returns (uint256);
+
+    /**
      * @notice Gets Merkle inclusion/exclusion proof of the element.
      */
     function getProof(bytes32 key) external view returns (Proof memory);
