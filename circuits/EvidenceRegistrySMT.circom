@@ -16,7 +16,7 @@ template BuildIsolatedKey() {
     hasher.out ==> isolatedKey;
 }
 
-template EvidenceRegistrySMTVerifier(levels) {
+template EvidenceRegistrySMT(levels) {
     // Public Inputs
     signal input root;
 
@@ -40,7 +40,7 @@ template EvidenceRegistrySMTVerifier(levels) {
     isolatedKey.key <== key;
 
     // Verify Sparse Merkle Tree Proof
-    component smtVerifier = SparseMerkleTreeVerifier(levels);
+    component smtVerifier = SparseMerkleTree(levels);
     smtVerifier.siblings <== siblings;
 
     smtVerifier.key <== isolatedKey.isolatedKey;
@@ -55,4 +55,4 @@ template EvidenceRegistrySMTVerifier(levels) {
     smtVerifier.root <== root;
 }
 
-component main {public [root]} = EvidenceRegistrySMTVerifier(80);
+component main {public [root]} = EvidenceRegistrySMT(80);

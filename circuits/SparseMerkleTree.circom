@@ -166,7 +166,7 @@ template DepthHasher() {
 /*
  * Checks the sparse merkle proof against the given root
  */
-template SparseMerkleTreeVerifier(depth) {
+template SparseMerkleTree(depth) {
     // The root of the sparse merkle tree
     signal input root;
     // The siblings for each depth
