@@ -10,6 +10,10 @@ interface IEvidenceRegistry {
      */
     event RootUpdated(bytes32 indexed prev, bytes32 indexed curr);
 
+    error KeyNotInPrimeField(bytes32 key);
+    error KeyAlreadyExists(bytes32 key);
+    error KeyNotFound(bytes32 key);
+
     /**
      * @notice Adds the new statement to the DB.
      */
