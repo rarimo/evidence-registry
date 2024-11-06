@@ -48,7 +48,7 @@ describe("EvidenceRegistrySMT", () => {
 
   afterEach(reverter.revert);
 
-  it.only("should verify the proof", async () => {
+  it("should verify the proof", async () => {
     const key = ethers.toBeHex(ethers.hexlify(ethers.randomBytes(28)), 32);
     const value = poseidonHash(key);
 
