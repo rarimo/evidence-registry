@@ -4,9 +4,12 @@ import { ethers } from "hardhat";
 import { time } from "@nomicfoundation/hardhat-network-helpers";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
-import { getPoseidon, poseidonHash, Reverter, getIsolatedKey } from "@test-helpers";
+import { getPoseidon, poseidonHash, Reverter, getIsolatedKey, getRoot } from "@test-helpers";
 
 import { EvidenceDB, EvidenceRegistry } from "@ethers-v6";
+import { LocalStorageDB, Merkletree, str2Bytes } from "@iden3/js-merkletree";
+
+import "mock-local-storage";
 
 describe("EvidenceRegistry", () => {
   const reverter = new Reverter();
@@ -84,7 +87,12 @@ describe("EvidenceRegistry", () => {
       const key = ethers.ZeroHash;
       const value = poseidonHash(key);
 
-      await evidenceRegistry.addStatement(key, value);
+      const localMerkleTree = new Merkletree(new LocalStorageDB(str2Bytes("")), true, MERKLE_TREE_DEPTH);
+      await localMerkleTree.add(BigInt(getIsolatedKey(USER.address, key)), BigInt(value));
+
+      await expect(evidenceRegistry.addStatement(key, value))
+        .to.emit(evidenceRegistry, "RootUpdated")
+        .withArgs(ethers.ZeroHash, await getRoot(localMerkleTree));
 
       expect(await evidenceDB.getValue(getIsolatedKey(USER.address, key))).to.be.equal(value);
       expect(await evidenceRegistry.getRootTimestamp(await evidenceDB.getRoot())).to.be.equal(await time.latest());
