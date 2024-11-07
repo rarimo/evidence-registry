@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: CC0-1.0
 pragma solidity ^0.8.21;
 
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
@@ -22,8 +22,10 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
     }
 
     modifier onRootUpdate() {
-        _rootTimestamps[_evidenceDB.getRoot()] = block.timestamp;
+        bytes32 prevRoot_ = _evidenceDB.getRoot();
+        _rootTimestamps[prevRoot_] = block.timestamp;
         _;
+        emit RootUpdated(prevRoot_, _evidenceDB.getRoot());
     }
 
     function __EvidenceRegistry_init(address evidenceDB_) external initializer {
