@@ -1,8 +1,8 @@
 {
   "name": "evidence-registry",
   "version": "0.1.0",
-  "license": "MIT",
-  "author": "Distributed Lab",
+  "license": "CC0-1.0",
+  "author": "Rarilabs",
   "description": "",
   "keywords": [
     "solidity",
@@ -19,16 +19,14 @@
     "clean": "npx hardhat clean",
     "prepare-for-tests": "npx hardhat zkit make && npx hardhat zkit verifiers",
     "test": "npx hardhat test",
-    "test-all": "npm run deploy-localhost && npm run test",
+    "test-all": "npm run prepare-for-tests && npm run test",
     "private-network": "npx hardhat node",
-    "deploy-localhost": "npx hardhat migrate --network localhost",
     "generate-types": "TYPECHAIN_FORCE=true npx hardhat typechain",
     "solhint-check": "solhint \"./contracts/**/*.sol\"",
     "lint-fix": "npm run lint-sol-fix && npm run lint-ts-fix && npm run lint-json-fix && npm run solhint-check",
     "lint-json-fix": "prettier --write \"./**/*.json\"",
     "lint-ts-fix": "prettier --write \"./**/*.ts\"",
-    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\"",
-    "publish-to-npm": "npm run lint-fix && bash ./scripts/publish.sh --public"
+    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\""
   },
   "dependencies": {
     "@openzeppelin/contracts": "5.1.0",
@@ -42,7 +40,6 @@
     "@nomicfoundation/hardhat-ethers": "^3.0.6",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
     "@solarity/chai-zkit": "^0.2.5",
-    "@solarity/hardhat-migrate": "^2.1.10",
     "@solarity/hardhat-zkit": "^0.4.13",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",

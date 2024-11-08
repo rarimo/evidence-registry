@@ -1,9 +1,7 @@
-import "@nomicfoundation/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
 
 import "@solarity/chai-zkit";
 import "@solarity/hardhat-zkit";
-import "@solarity/hardhat-migrate";
 
 import "@typechain/hardhat";
 
@@ -19,10 +17,6 @@ import { HardhatUserConfig } from "hardhat/config";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-function privateKey() {
-  return process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [];
-}
-
 const config: HardhatUserConfig = {
   networks: {
     hardhat: {
@@ -30,16 +24,6 @@ const config: HardhatUserConfig = {
     },
     localhost: {
       url: "http://127.0.0.1:8545",
-      gasMultiplier: 1.2,
-    },
-    sepolia: {
-      url: `https://sepolia.infura.io/v3/${process.env.INFURA_KEY}`,
-      accounts: privateKey(),
-      gasMultiplier: 1.2,
-    },
-    ethereum: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
-      accounts: privateKey(),
       gasMultiplier: 1.2,
     },
   },
@@ -52,15 +36,6 @@ const config: HardhatUserConfig = {
       },
       evmVersion: "paris",
     },
-  },
-  etherscan: {
-    apiKey: {
-      sepolia: `${process.env.ETHERSCAN_KEY}`,
-      mainnet: `${process.env.ETHERSCAN_KEY}`,
-    },
-  },
-  migrate: {
-    pathToMigrations: "./deploy/",
   },
   mocha: {
     timeout: 1000000,
