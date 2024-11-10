@@ -1,6 +1,8 @@
-# ERC-XXXX: ZK Identity Registry Reference Implementation
+# ERC-7812 Reference Implementation
 
 This EIP introduces an on-chain registry system for storing abstract statements, where the state of the system can be proven in zero knowledge without disclosing anything about these statements. Developers may use the singleton `EvidenceRegistry` contract to integrate custom business-specific registrars for statement processing and proving.
+
+Link to the [ERC-7812](https://ethereum-magicians.org/t/erc-7812-zk-identity-registry/21624).
 
 ## Usage
 
@@ -23,4 +25,3 @@ npm run test-all
 ## Disclaimer
 
 GLHF!
-
