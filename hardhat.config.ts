@@ -2,6 +2,7 @@ import "@nomicfoundation/hardhat-chai-matchers";
 
 import "@solarity/chai-zkit";
 import "@solarity/hardhat-zkit";
+import "@solarity/hardhat-migrate";
 
 import "@typechain/hardhat";
 
