@@ -14,7 +14,7 @@ import "mock-local-storage";
 describe("EvidenceDB", () => {
   const reverter = new Reverter();
 
-  const MERKLE_TREE_DEPTH = 20;
+  const MERKLE_TREE_DEPTH = 80;
 
   let USER: SignerWithAddress;
   let REGISTRY: SignerWithAddress;

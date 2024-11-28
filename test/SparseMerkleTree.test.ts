@@ -16,7 +16,7 @@ import { SparseMerkleTree } from "@/generated-types/ethers/contracts/mocks/Spars
 describe("SparseMerkleTree", () => {
   const reverter = new Reverter();
 
-  const MERKLE_TREE_DEPTH = 20;
+  const MERKLE_TREE_DEPTH = 80;
 
   let USER1: SignerWithAddress;
 
