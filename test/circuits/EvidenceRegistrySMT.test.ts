@@ -5,14 +5,14 @@ import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
 import { getIsolatedKey, getPoseidon, poseidonHash, Reverter } from "@test-helpers";
 
+import { MERKLE_TREE_DEPTH } from "@/scripts/constants";
+
 import { EvidenceDB, EvidenceRegistry } from "@ethers-v6";
 
 import { EvidenceRegistrySMT } from "@/generated-types/zkit";
 
 describe("EvidenceRegistrySMT", () => {
   const reverter = new Reverter();
-
-  const MERKLE_TREE_DEPTH = 80;
 
   let evidenceRegistrySMTCircuit: EvidenceRegistrySMT;
 

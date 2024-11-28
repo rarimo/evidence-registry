@@ -6,6 +6,8 @@ import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
 import { getPoseidon, poseidonHash, Reverter, getIsolatedKey, getRoot } from "@test-helpers";
 
+import { MERKLE_TREE_DEPTH } from "@/scripts/constants";
+
 import { EvidenceDB, EvidenceRegistry } from "@ethers-v6";
 import { LocalStorageDB, Merkletree, str2Bytes } from "@iden3/js-merkletree";
 
@@ -15,8 +17,6 @@ describe("EvidenceRegistry", () => {
   const reverter = new Reverter();
 
   const BABY_JUB_JUB_PRIME_FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
-
-  const MERKLE_TREE_DEPTH = 80;
 
   let USER: SignerWithAddress;
 
