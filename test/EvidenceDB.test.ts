@@ -5,6 +5,8 @@ import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
 import { LocalStorageDB, Merkletree, str2Bytes } from "@iden3/js-merkletree";
 
+import { MERKLE_TREE_DEPTH } from "@/scripts/constants";
+
 import { Reverter, getPoseidon, poseidonHash, getRoot, getOnChainProof } from "@test-helpers";
 
 import { EvidenceDB } from "@ethers-v6";
@@ -13,8 +15,6 @@ import "mock-local-storage";
 
 describe("EvidenceDB", () => {
   const reverter = new Reverter();
-
-  const MERKLE_TREE_DEPTH = 20;
 
   let USER: SignerWithAddress;
   let REGISTRY: SignerWithAddress;

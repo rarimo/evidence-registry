@@ -8,6 +8,8 @@ import { LocalStorageDB, Merkletree, str2Bytes, verifyProof } from "@iden3/js-me
 
 import { Reverter, getPoseidon, poseidonHash, getOnChainProof, getRoot } from "@test-helpers";
 
+import { MERKLE_TREE_DEPTH } from "@/scripts/constants";
+
 import { IEvidenceDB, SparseMerkleTreeMock } from "@ethers-v6";
 
 import "mock-local-storage";
@@ -15,8 +17,6 @@ import { SparseMerkleTree } from "@/generated-types/ethers/contracts/mocks/Spars
 
 describe("SparseMerkleTree", () => {
   const reverter = new Reverter();
-
-  const MERKLE_TREE_DEPTH = 20;
 
   let USER1: SignerWithAddress;
 
