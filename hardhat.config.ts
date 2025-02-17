@@ -52,6 +52,7 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 1000,
       },
+      evmVersion: "london",
     },
   },
   etherscan: {
