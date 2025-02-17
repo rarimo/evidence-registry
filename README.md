@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/@rarimo/evidence-registry.svg)](https://www.npmjs.com/package/@rarimo/evidence-registry)
+
 # ERC-7812 Reference Implementation
 
 This EIP introduces an on-chain registry system for storing abstract statements, where the state of the system can be proven in zero knowledge without disclosing anything about these statements. Developers may use the singleton `EvidenceRegistry` contract to integrate custom business-specific registrars for statement processing and proving.
