@@ -1,10 +1,12 @@
 import { ethers } from "hardhat";
 import hre from "hardhat";
 
+const { poseidonContract } = require("circomlibjs");
+
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 const deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c";
-const evidenceRegistrySalt = "0x75f8813fcc81d0390055eb6f4f572a859137ed12b2e14a566a585d09860dfe33";
+const evidenceRegistrySalt = "0x9a533395526948e0860194b5dbd307de82d332d7fb268e02659096f3c904bf9f";
 const poseidonSalt = "0x7812781278127812781278127812781278127812781278127812781278127812";
 
 async function deploy(signer: HardhatEthersSigner, salt: string, initcode: string): Promise<string> {
@@ -22,10 +24,7 @@ async function deploy(signer: HardhatEthersSigner, salt: string, initcode: strin
 
 async function deployPoseidons(signer: HardhatEthersSigner): Promise<string[]> {
   const addresses = [];
-  const poseidonInitcodes = [
-    hre.artifacts.readArtifactSync("PoseidonUnit2L").bytecode,
-    hre.artifacts.readArtifactSync("PoseidonUnit3L").bytecode,
-  ];
+  const poseidonInitcodes = [poseidonContract.createCode(2), poseidonContract.createCode(3)];
 
   for (let i = 0; i < poseidonInitcodes.length; i++) {
     addresses.push(await deploy(signer, poseidonSalt, poseidonInitcodes[i]));

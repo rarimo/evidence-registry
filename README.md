@@ -26,7 +26,7 @@ npm run test-all
 
 ## Deployment
 
-The `EvidenceRegistry` is deployed via a [deterministic factory](https://github.com/Arachnid/deterministic-deployment-proxy) to the address `0x781247B377c6D745d40798121Db9C52F3E5a7812`.
+The `EvidenceRegistry` is deployed via a [deterministic factory](https://github.com/Arachnid/deterministic-deployment-proxy) to the address `0x781268D46a654D020922f115D75dd3D56D287812`.
 
 To reproduce the deployment on other chains, run `npx hardhat compile && npx hardhat run ./scripts/deploy.ts --network <network>`.
 
