@@ -1,16 +1,18 @@
 {
-  "name": "evidence-registry",
+  "name": "@rarimo/evidence-registry",
   "version": "0.1.0",
   "license": "CC0-1.0",
   "author": "Rarilabs",
   "description": "",
   "keywords": [
     "solidity",
-    "smart-contracts"
+    "smart-contracts",
+    "eip-7812",
+    "zkp"
   ],
   "files": [
     "**/*.sol",
-    "!mock/**/*"
+    "!mocks/**/*"
   ],
   "scripts": {
     "prepare": "husky",
@@ -21,17 +23,21 @@
     "test": "npx hardhat test",
     "test-all": "npm run prepare-for-tests && npm run test",
     "private-network": "npx hardhat node",
+    "deploy-sepolia": "npx hardhat migrate --network sepolia --verify",
+    "deploy-ethereum": "npx hardhat migrate --network ethereum --verify",
     "generate-types": "TYPECHAIN_FORCE=true npx hardhat typechain",
     "solhint-check": "solhint \"./contracts/**/*.sol\"",
-    "lint-fix": "npm run lint-sol-fix && npm run lint-ts-fix && npm run lint-json-fix && npm run solhint-check",
+    "lint-fix": "npm run lint-sol-fix && npm run lint-ts-fix && npm run lint-json-fix",
     "lint-json-fix": "prettier --write \"./**/*.json\"",
     "lint-ts-fix": "prettier --write \"./**/*.ts\"",
-    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\""
+    "lint-sol-fix": "prettier --write \"contracts/**/*.sol\"",
+    "publish-to-npm": "bash ./scripts/publish.sh --public"
   },
   "dependencies": {
     "@openzeppelin/contracts": "5.1.0",
     "@openzeppelin/contracts-upgradeable": "5.1.0",
-    "@solarity/solidity-lib": "2.7.10"
+    "@solarity/solidity-lib": "2.7.10",
+    "circomlibjs": "0.1.7"
   },
   "devDependencies": {
     "@iden3/js-crypto": "^1.1.0",
@@ -49,7 +55,6 @@
     "@types/node": "^22.8.6",
     "chai": "^4.5.0",
     "circomlib": "^2.0.5",
-    "circomlibjs": "^0.1.7",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
     "hardhat": "^2.22.15",
