@@ -12,7 +12,8 @@
   ],
   "files": [
     "**/*.sol",
-    "!mocks/**/*"
+    "!mocks/**/*",
+    "!verifiers/**/*"
   ],
   "scripts": {
     "prepare": "husky",
