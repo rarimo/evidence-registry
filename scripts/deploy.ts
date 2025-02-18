@@ -66,6 +66,12 @@ async function init(addresses: string[]) {
 async function main() {
   const [signer] = await ethers.getSigners();
 
+  const factory = (await ethers.provider.getCode(deployer)).slice(2);
+
+  if (factory.length == 0) {
+    throw Error("Deterministic factory is not deployed to this network");
+  }
+
   const poseidons = await deployPoseidons(signer);
   const addresses = await deployRegistry(signer, poseidons);
 
