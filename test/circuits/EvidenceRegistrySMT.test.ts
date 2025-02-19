@@ -73,7 +73,7 @@ describe("EvidenceRegistrySMT", () => {
 
     expect(await evidenceRegistrySMTCircuit.verifyProof(zkpProof)).to.be.true;
 
-    const solidityVerifier = await ethers.deployContract("EvidenceRegistrySMTVerifier");
+    const solidityVerifier = await ethers.deployContract("EvidenceRegistrySMTGroth16Verifier");
 
     await expect(evidenceRegistrySMTCircuit).to.useSolidityVerifier(solidityVerifier).to.verifyProof(zkpProof);
   });

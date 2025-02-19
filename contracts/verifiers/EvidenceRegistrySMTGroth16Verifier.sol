@@ -4,7 +4,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-contract EvidenceRegistrySMTVerifier {
+contract EvidenceRegistrySMTGroth16Verifier {
     /// @dev base field size
     uint256 public constant BASE_FIELD_SIZE =
         21888242871839275222246405745257275088696311157297823662689037894645226208583;
@@ -31,22 +31,22 @@ contract EvidenceRegistrySMTVerifier {
     uint256 public constant GAMMA_Y2 =
         8495653923123431417604973247489272438418190587263600148770280649306958101930;
     uint256 public constant DELTA_X1 =
-        9995873673514540111024605754380547820455991330321378759265537477628821480261;
+        10407669879298523274169485959059617446999487528375484666994849899726625674427;
     uint256 public constant DELTA_X2 =
-        7369444758601575505952614903677183949194552569775496841993750120878911155401;
+        6350234017807611576643104119005932527270364010234349552171326414860280532959;
     uint256 public constant DELTA_Y1 =
-        20252152464652951914581310797962109141867302446115237314908259470434404420724;
+        15017457006835762842579921256570029491970275500213442145684677853191437710549;
     uint256 public constant DELTA_Y2 =
-        35496623223765555001223616667788765026515819050051408691289311742964696062;
+        4612283952548457142088445431647607580357199963490576107684414319583539454630;
 
     uint256 public constant IC0_X =
-        10426479446118947170285405970575658643440115681802286480920797147912786673676;
+        14697561618580604507809962725480095733457177343435590811158890541092993555071;
     uint256 public constant IC0_Y =
-        12049353011125584606647312403428763243055074801709086148772323019088012048762;
+        18704871372065419420367357415939575097273616693419032280173378245056326242;
     uint256 public constant IC1_X =
-        6297344277913761678481612877750122093547631083155274307384725592390418487749;
+        15531913257798110538406277015346783542839836848668785566428308634798151144408;
     uint256 public constant IC1_Y =
-        5992285640192257599498710573078264476279121658298463175406361359601166719304;
+        18711965232279315504988232831459493161369628431135294666102219094111970471016;
 
     /// @dev memory pointer sizes
     uint16 public constant P_PUBLIC_SIGNALS_ACCUMULATOR_SIZE = 128;
@@ -70,7 +70,7 @@ contract EvidenceRegistrySMTVerifier {
                 mstore(add(pointer_, 32), y_)
                 mstore(add(pointer_, 64), s_)
 
-                res_ := staticcall(sub(gas(), 2000), 7, pointer_, 96, pointer_, 64) // ecMul
+                res_ := staticcall(6000, 7, pointer_, 96, pointer_, 64) // ecMul
                 res_ := and(res_, gt(returndatasize(), 0)) // check that multiplication succeeded
 
                 if iszero(res_) {
@@ -80,7 +80,7 @@ contract EvidenceRegistrySMTVerifier {
                 mstore(add(pointer_, 64), mload(pR_))
                 mstore(add(pointer_, 96), mload(add(pR_, 32)))
 
-                res_ := staticcall(sub(gas(), 2000), 6, pointer_, 128, pR_, 64) // ecAdd
+                res_ := staticcall(150, 6, pointer_, 128, pR_, 64) // ecAdd
                 res_ := and(res_, gt(returndatasize(), 0)) // check that addition succeeded
             }
 
@@ -138,7 +138,7 @@ contract EvidenceRegistrySMTVerifier {
                 mstore(add(pPairing_, 704), DELTA_Y1)
                 mstore(add(pPairing_, 736), DELTA_Y2)
 
-                res_ := staticcall(sub(gas(), 2000), 8, pPairing_, 768, pPairing_, 32) // ecPairing
+                res_ := staticcall(181000, 8, pPairing_, 768, pPairing_, 32) // ecPairing
                 res_ := and(res_, mload(pPairing_)) // check that pairing succeeded
             }
 
