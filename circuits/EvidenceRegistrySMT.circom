@@ -54,5 +54,3 @@ template EvidenceRegistrySMT(levels) {
 
     smtVerifier.root <== root;
 }
-
-component main {public [root]} = EvidenceRegistrySMT(80);

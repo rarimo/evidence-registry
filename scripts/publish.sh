@@ -32,13 +32,9 @@ function parseArgs {
 
 parseArgs "$@"
 
-cp LICENSE README.md package.json contracts/
-
 if [ ${PUBLIC} == true ]
 then
-  npm publish contracts/ --access public
+  npm publish --access public
 else
-  npm publish contracts/
+  npm publish
 fi
-
-rm contracts/LICENSE contracts/README.md contracts/package.json

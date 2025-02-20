@@ -1,6 +1,6 @@
 {
   "name": "@rarimo/evidence-registry",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "CC0-1.0",
   "author": "Rarilabs",
   "description": "",
@@ -11,9 +11,13 @@
     "zkp"
   ],
   "files": [
-    "**/*.sol",
-    "!mocks/**/*",
-    "!verifiers/**/*"
+    "README.md",
+    "LICENSE",
+    "circuits/**/*.circom",
+    "!circuits/main/**/*",
+    "contracts/**/*.sol",
+    "!contracts/mocks/**/*",
+    "!contracts/verifiers/**/*"
   ],
   "scripts": {
     "prepare": "husky",
