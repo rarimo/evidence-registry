@@ -35,4 +35,9 @@ interface IEvidenceRegistry {
      * Non-existent root MUST return `0`.
      */
     function getRootTimestamp(bytes32 root) external view returns (uint256);
+
+    /**
+     * @notice Builds and returns the isolated key for `source` and given `key`.
+     */
+    function getIsolatedKey(address source, bytes32 key) external view returns (bytes32);
 }

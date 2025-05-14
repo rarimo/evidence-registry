@@ -6,7 +6,7 @@ const { poseidonContract } = require("circomlibjs");
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 const deployer = "0x4e59b44847b379578588920ca78fbf26c0b4956c";
-const evidenceRegistrySalt = "0x9a533395526948e0860194b5dbd307de82d332d7fb268e02659096f3c904bf9f";
+const evidenceRegistrySalt = "0x04834e077c463de76a20df3770a7b96a5e5eb826922d1514f943cd5b41ccaed0";
 const poseidonSalt = "0x7812781278127812781278127812781278127812781278127812781278127812";
 
 async function deploy(signer: HardhatEthersSigner, salt: string, initcode: string): Promise<string> {
