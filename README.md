@@ -26,12 +26,12 @@ npm run test-all
 
 ## Deployment
 
-The `EvidenceRegistry` is deployed via a [deterministic factory](https://github.com/Arachnid/deterministic-deployment-proxy) to the address `0x781268D46a654D020922f115D75dd3D56D287812`.
+The `EvidenceRegistry` is deployed via a [deterministic factory](https://github.com/Arachnid/deterministic-deployment-proxy) to the address `FIXME`.
 
 To reproduce the deployment on other chains, run `npx hardhat compile && npx hardhat run ./scripts/deploy.ts --network <network>`.
 
 > [!IMPORTANT]
-> Do not modify the code, lint solidity files, or update compiler / hardhat settings as this will change the smart contracts bytecode.
+> Do not modify the code, lint solidity files, or update compiler/hardhat settings as this will change the smart contracts bytecode.
 
 ## Disclaimer
 

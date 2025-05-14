@@ -39,7 +39,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         bytes32 key_,
         bytes32 value_
     ) external onlyInPrimeField(key_) onlyInPrimeField(value_) onRootUpdate {
-        bytes32 isolatedKey_ = _getIsolatedKey(key_);
+        bytes32 isolatedKey_ = getIsolatedKey(msg.sender, key_);
 
         if (_evidenceDB.getValue(isolatedKey_) != bytes32(0)) {
             revert KeyAlreadyExists(key_);
@@ -52,7 +52,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
      * @inheritdoc IEvidenceRegistry
      */
     function removeStatement(bytes32 key_) external onlyInPrimeField(key_) onRootUpdate {
-        bytes32 isolatedKey_ = _getIsolatedKey(key_);
+        bytes32 isolatedKey_ = getIsolatedKey(msg.sender, key_);
 
         if (_evidenceDB.getValue(isolatedKey_) == bytes32(0)) {
             revert KeyDoesNotExist(key_);
@@ -68,7 +68,7 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         bytes32 key_,
         bytes32 newValue_
     ) external onlyInPrimeField(key_) onlyInPrimeField(newValue_) onRootUpdate {
-        bytes32 isolatedKey_ = _getIsolatedKey(key_);
+        bytes32 isolatedKey_ = getIsolatedKey(msg.sender, key_);
 
         if (_evidenceDB.getValue(isolatedKey_) == bytes32(0)) {
             revert KeyDoesNotExist(key_);
@@ -92,12 +92,15 @@ contract EvidenceRegistry is IEvidenceRegistry, Initializable {
         return _rootTimestamps[root_];
     }
 
-    function getEvidenceDB() external view returns (address) {
-        return address(_evidenceDB);
+    /**
+     * @inheritdoc IEvidenceRegistry
+     */
+    function getIsolatedKey(address source_, bytes32 key_) public pure returns (bytes32) {
+        return PoseidonUnit2L.poseidon([bytes32(uint256(uint160(source_))), key_]);
     }
 
-    function _getIsolatedKey(bytes32 key_) internal view returns (bytes32) {
-        return PoseidonUnit2L.poseidon([bytes32(uint256(uint160(msg.sender))), key_]);
+    function getEvidenceDB() external view returns (address) {
+        return address(_evidenceDB);
     }
 
     function _requireInPrimeField(bytes32 key_) private pure {
